@@ -29,7 +29,9 @@ const Modal = ({ onClose, children }: ModalProps) => {
       role="dialog"
       aria-modal="true"
     >
-      <div className={css.modal}>{children}</div>
+      <div className={css.modal} onClick={e => e.stopPropagation()}>
+        {children}
+      </div>
     </div>,
     document.body
   );
