@@ -1,6 +1,5 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { fetchNotes } from '../services/noteService';
-// import type { Note } from '../types/note';
+import { fetchNotes, PER_PAGE } from '../services/noteService';
 
 interface UseNotesOptions {
   search: string;
@@ -13,15 +12,13 @@ interface UseNotesOptions {
 export const useFetchNotes = ({
   search,
   /* tag = '', */
-  page /*  = 1 */,
-  perPage /*  = 10 */,
+  page = 1,
+  perPage = PER_PAGE,
 }: /* sortBy = '', */
 UseNotesOptions) => {
   return useQuery({
-    queryKey: ['notes', search, /* tag, */ page, perPage /* , sortBy */],
+    queryKey: ['notes', { search, /* tag, */ page, perPage /* , sortBy */ }],
     queryFn: () => fetchNotes(search, /* tag, */ page, perPage /* , sortBy */),
-    /* enabled: search !== '', */
     placeholderData: keepPreviousData,
-    /* keepPreviousData: true; */
   });
 };

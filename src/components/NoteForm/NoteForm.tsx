@@ -9,6 +9,16 @@ interface NoteFormValues {
   tag: string;
 }
 
+interface NoteFormProps {
+  onClose: () => void;
+  // onSubmit: (values: NoteFormValues) => void;
+  onSubmit: (
+    values: NoteFormValues,
+    actions: FormikHelpers<NoteFormValues>
+  ) => void;
+  isSubmitting?: boolean;
+}
+
 const initialValues: NoteFormValues = {
   title: '',
   content: '',
@@ -26,21 +36,21 @@ const noteFormSchema = Yup.object().shape({
     .required('Tag is required'),
 });
 
-const NoteForm = () => {
+const NoteForm = ({ onClose, onSubmit, isSubmitting }: NoteFormProps) => {
   const fieldId = useId();
 
-  const handleSubmit = (
+  /*  const handleSubmit = (
     values: NoteFormValues,
     actions: FormikHelpers<NoteFormValues>
   ) => {
     console.log(values);
     actions.resetForm();
-  };
+  }; */
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       validationSchema={noteFormSchema}
     >
       <Form className={css.form}>
@@ -85,11 +95,16 @@ const NoteForm = () => {
         </div>
 
         <div className={css.actions}>
-          <button type="button" className={css.cancelButton}>
+          <button type="button" className={css.cancelButton} onClick={onClose}>
             Cancel
           </button>
-          <button type="submit" className={css.submitButton} disabled={false}>
-            Create note
+          <button
+            type="submit"
+            className={css.submitButton}
+            disabled={isSubmitting}
+          >
+            {/* Create note */}
+            {isSubmitting ? 'Creating...' : 'Create note'}
           </button>
         </div>
       </Form>

@@ -5,7 +5,7 @@ const API_KEY = import.meta.env.VITE_API_NOTES_TOKEN;
 
 const BASE_URL = 'https://notehub-public.goit.study/api/notes';
 
-const PER_PAGE = 10;
+export const PER_PAGE = 10;
 /* const API_ENDPOINTS = {
   SEARCH: '?search',
 }; */
@@ -40,5 +40,17 @@ export const fetchNotes = async (
 
   const { data } = await noteService.get<NotesResponse>('', { params });
 
+  return data;
+};
+
+export const createNote = async (
+  newNote: Pick<Note, 'title' | 'content' | 'tag'>
+) => {
+  const { data } = await noteService.post<Note>('', newNote);
+  return data;
+};
+
+export const deleteNote = async (noteId: string): Promise<Note> => {
+  const { data } = await noteService.delete(`/${noteId}`);
   return data;
 };

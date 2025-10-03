@@ -3,11 +3,11 @@ import type { Note } from '../../types/note';
 import css from './NoteList.module.css';
 
 interface NoteListProps {
-  /* onSelect: (note: Note) => void; */
+  onDelete: (note: string) => void;
   notes: Note[];
 }
 
-const NoteList = ({ /* onSelect, */ notes }: NoteListProps) => (
+const NoteList = ({ onDelete, notes }: NoteListProps) => (
   // const { data, isLoading, isError } = useFetchNotes({});
 
   <ul className={css.list}>
@@ -18,7 +18,9 @@ const NoteList = ({ /* onSelect, */ notes }: NoteListProps) => (
           <p className={css.content}>{content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{tag}</span>
-            <button className={css.button}>Delete</button>
+            <button className={css.button} onClick={() => onDelete(id)}>
+              Delete
+            </button>
           </div>
         </li>
       )

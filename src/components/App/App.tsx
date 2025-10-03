@@ -10,11 +10,16 @@ import SearchBox from '../SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createNote, deleteNote } from '../../services/noteService';
+import type { FormikHelpers } from 'formik';
+import type { Note } from '../../types/note';
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   /*   const handleChange = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +57,42 @@ const App = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const createNoteMutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      setIsModalOpen(false);
+    },
+  });
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: deleteNote,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes'] }),
+  });
+
+  const handleDeleteNote = (noteId: string) => {
+    deleteNoteMutation.mutate(noteId);
+  };
+
+  /*   const handleCreateNote = async (values: {
+    title: string;
+    content: string;
+    tag: string;
+  }) => {
+    createNoteMutation.mutate(values);
+  }; */
+
+  const handleCreateNote = async (
+    values: Pick<Note, 'title' | 'content' | 'tag'>,
+    actions: FormikHelpers<Pick<Note, 'title' | 'content' | 'tag'>>
+  ) => {
+    createNoteMutation.mutate(values, {
+      onSuccess: () => {
+        actions.resetForm();
+      },
+    });
+  };
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -69,13 +110,19 @@ const App = () => {
       </header>
 
       {isFetching && <Loading />}
-      {notes.length > 0 && <NoteList notes={notes} />}
+      {notes.length > 0 && (
+        <NoteList notes={notes} onDelete={handleDeleteNote} />
+      )}
       {notes.length === 0 && !isFetching && !isError && <EmptyListMessage />}
       {isError && <Error />}
 
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <NoteForm />
+          <NoteForm
+            onClose={closeModal}
+            onSubmit={handleCreateNote}
+            isSubmitting={createNoteMutation.isPending}
+          />
         </Modal>
       )}
     </div>
