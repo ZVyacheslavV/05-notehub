@@ -14,7 +14,7 @@ interface NoteFormValues {
 
 interface NoteFormProps {
   onClose: () => void;
-  isOpen: (arg: boolean) => void;
+  setIsOpen: (arg: boolean) => void;
   // onSubmit: (values: NoteFormValues) => void;
   /* onSubmit: (
     values: NoteFormValues,
@@ -39,7 +39,7 @@ const noteFormSchema = Yup.object().shape({
     .required('Tag is required'),
 });
 
-const NoteForm = ({ onClose, isOpen /* , onSubmit */ }: NoteFormProps) => {
+const NoteForm = ({ onClose, setIsOpen /* , onSubmit */ }: NoteFormProps) => {
   const fieldId = useId();
   const queryClient = useQueryClient();
 
@@ -47,7 +47,7 @@ const NoteForm = ({ onClose, isOpen /* , onSubmit */ }: NoteFormProps) => {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      isOpen(false);
+      setIsOpen(false);
       // setIsModalOpen(false);
     },
   });
