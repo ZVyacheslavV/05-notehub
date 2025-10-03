@@ -26,7 +26,7 @@ const App = () => {
 
   const [inputValue, setInputValue] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     debouncedSearch(e.target.value);
   };
@@ -55,7 +55,7 @@ const App = () => {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox onChange={handleChange} value={inputValue} />
+        <SearchBox onChange={handleSearchChange} value={inputValue} />
         {isSuccess && totalPages > 1 && (
           <Paginate
             currentPage={currentPage}

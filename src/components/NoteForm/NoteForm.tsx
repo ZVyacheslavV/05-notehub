@@ -1,25 +1,65 @@
+import { useId } from 'react';
 import css from './NoteForm.module.css';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-// import * as Yup from 'yup';
+import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
+import * as Yup from 'yup';
+
+interface NoteFormValues {
+  title: string;
+  content: string;
+  tag: string;
+}
+
+const initialValues: NoteFormValues = {
+  title: '',
+  content: '',
+  tag: 'Todo',
+};
+
+const noteFormSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(3, 'Title too short')
+    .max(50, 'Title too long')
+    .required('Title is required'),
+  content: Yup.string().max(500, 'Content too long'),
+  tag: Yup.string()
+    .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid tag')
+    .required('Tag is required'),
+});
 
 const NoteForm = () => {
-  // const handleSubmit = () => {
+  const fieldId = useId();
 
-  // }
+  const handleSubmit = (
+    values: NoteFormValues,
+    actions: FormikHelpers<NoteFormValues>
+  ) => {
+    console.log(values);
+    actions.resetForm();
+  };
 
   return (
-    <Formik initialValues={{}} onSubmit={() => {}}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={noteFormSchema}
+    >
       <Form className={css.form}>
         <div className={css.formGroup}>
-          <label htmlFor="title">Title</label>
-          <Field id="title" type="text" name="title" className={css.input} />
+          <label htmlFor={`${fieldId}-title`}>Title</label>
+          <Field
+            id={`${fieldId}-title`}
+            type="text"
+            name="title"
+            className={css.input}
+          />
           <ErrorMessage name="title" component="span" className={css.error} />
         </div>
 
         <div className={css.formGroup}>
-          <label htmlFor="content">Content</label>
-          <textarea
-            id="content"
+          <label htmlFor={`${fieldId}-content`}>Content</label>
+          <Field
+            as="textarea"
+            id={`${fieldId}-content`}
             name="content"
             rows={8}
             className={css.textarea}
@@ -28,8 +68,13 @@ const NoteForm = () => {
         </div>
 
         <div className={css.formGroup}>
-          <label htmlFor="tag">Tag</label>
-          <Field id="tag" name="tag" className={css.select}>
+          <label htmlFor={`${fieldId}-tag`}>Tag</label>
+          <Field
+            as="select"
+            id={`${fieldId}-tag`}
+            name="tag"
+            className={css.select}
+          >
             <option value="Todo">Todo</option>
             <option value="Work">Work</option>
             <option value="Personal">Personal</option>
