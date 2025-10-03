@@ -50,7 +50,7 @@ export const createNote = async (
   return data;
 };
 
-export const deleteNote = async (noteId: string): Promise<Note> => {
-  const { data } = await noteService.delete(`/${noteId}`);
+export const deleteNote = async (noteId: string) => {
+  const { data } = await noteService.delete<Note>(`/${noteId}`);
   return data;
 };

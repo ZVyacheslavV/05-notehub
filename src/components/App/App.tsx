@@ -5,7 +5,7 @@ import NoteList from '../NoteList/NoteList';
 import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
 import EmptyListMessage from '../EmptyListMessage/EmptyListMessage';
-import Paginate from '../Pagination/Pagination';
+import Pagination from '../Pagination/Pagination';
 import SearchBox from '../SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
 import Modal from '../Modal/Modal';
@@ -98,7 +98,7 @@ const App = () => {
       <header className={css.toolbar}>
         <SearchBox onChange={handleSearchChange} value={inputValue} />
         {isSuccess && totalPages > 1 && (
-          <Paginate
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setCurrentPage}
