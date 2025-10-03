@@ -118,7 +118,7 @@ const App = () => {
         <Modal onClose={closeModal}>
           <NoteForm
             onClose={closeModal}
-            isOpen={setIsModalOpen}
+            setIsOpen={setIsModalOpen}
             /* onSubmit={handleCreateNote} */
             /* isSubmitting={createNoteMutation.isPending} */
           />
