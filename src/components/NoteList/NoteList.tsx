@@ -3,7 +3,7 @@ import type { Note } from '../../types/note';
 import css from './NoteList.module.css';
 
 interface NoteListProps {
-  onDelete: (note: string) => void;
+  onDelete: (id: string) => void;
   notes: Note[];
 }
 
