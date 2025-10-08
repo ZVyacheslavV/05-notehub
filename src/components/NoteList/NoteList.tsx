@@ -25,18 +25,18 @@ const NoteList = ({ /* onDelete, */ notes }: NoteListProps) => {
     //   !prevNotes ? [] : prevNotes.filter(note => note.id !== deletedNote.id)
     // ),
 
-    /*       queryClient.setQueryData(
-        ['notes', { search: '', page: 1, perPage: PER_PAGE }], // key should be as in useQuery
-        prev =>
-          !prev
-            ? prev
-            : {
-                ...prev,
-                notes: prev.notes.filter(
-                  (note: Note) => note.id !== deletedNote.id
-                ),
-              }
-      ), */
+    //     queryClient.setQueryData/* <NoteRespType> */(
+    //   ['notes', { search: '', page: 1, perPage: PER_PAGE }], // key should be as in useQuery
+    //   prev =>
+    //     !prev
+    //       ? prev
+    //       : {
+    //           ...prev,
+    //           notes: prev.notes.filter(
+    //             (note: Note) => note.id !== deletedNote.id
+    //           ),
+    //         }
+    // ),
   });
 
   const handleDeleteNote = (noteId: string) => {
