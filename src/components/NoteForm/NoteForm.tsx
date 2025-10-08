@@ -43,11 +43,12 @@ const NoteForm = ({ onClose, setIsOpen /* , onSubmit */ }: NoteFormProps) => {
   const fieldId = useId();
   const queryClient = useQueryClient();
 
-  const createNoteMutation = useMutation({
+  const { mutate: createMutate } = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       setIsOpen(false);
+
       // setIsModalOpen(false);
     },
   });
@@ -56,7 +57,7 @@ const NoteForm = ({ onClose, setIsOpen /* , onSubmit */ }: NoteFormProps) => {
     values: Pick<Note, 'title' | 'content' | 'tag'>,
     actions: FormikHelpers<Pick<Note, 'title' | 'content' | 'tag'>>
   ) => {
-    await createNoteMutation.mutateAsync(values, {
+    await createMutate(values, {
       onSuccess: () => {
         actions.resetForm();
       },

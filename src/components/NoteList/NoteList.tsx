@@ -2,7 +2,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Note } from '../../types/note';
 import css from './NoteList.module.css';
-import { deleteNote } from '../../services/noteService';
+import { deleteNote /* , PER_PAGE */ } from '../../services/noteService';
+import { useState } from 'react';
 
 interface NoteListProps {
   /* onDelete: (id: string) => void; */
@@ -12,13 +13,34 @@ interface NoteListProps {
 const NoteList = ({ /* onDelete, */ notes }: NoteListProps) => {
   const queryClient = useQueryClient();
   // const { data, isLoading, isError } = useFetchNotes({});
-  const deleteNoteMutation = useMutation({
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const { mutate: deleteMutate } = useMutation({
     mutationFn: deleteNote,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes'] }),
+    onMutate: (id: string) => setDeletingId(id),
+    onSettled: () => setDeletingId(null),
+    onSuccess: /* deletedNote */ () =>
+      queryClient.invalidateQueries({ queryKey: ['notes'] }),
+    // queryClient.setQueryData<Note[]>(['notes'], prevNotes =>
+    //   !prevNotes ? [] : prevNotes.filter(note => note.id !== deletedNote.id)
+    // ),
+
+    /*       queryClient.setQueryData(
+        ['notes', { search: '', page: 1, perPage: PER_PAGE }], // key should be as in useQuery
+        prev =>
+          !prev
+            ? prev
+            : {
+                ...prev,
+                notes: prev.notes.filter(
+                  (note: Note) => note.id !== deletedNote.id
+                ),
+              }
+      ), */
   });
 
   const handleDeleteNote = (noteId: string) => {
-    deleteNoteMutation.mutate(noteId);
+    deleteMutate(noteId);
   };
 
   return (
@@ -34,7 +56,7 @@ const NoteList = ({ /* onDelete, */ notes }: NoteListProps) => {
                 className={css.button}
                 onClick={() => handleDeleteNote(id)}
               >
-                Delete
+                {deletingId === id ? 'Deleting' : 'Delete'}
               </button>
             </div>
           </li>
