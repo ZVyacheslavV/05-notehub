@@ -3,16 +3,16 @@ import css from './SearchBox.module.css';
 
 interface SearchBoxProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  value: string;
+  defaultValue: string;
 }
 
-const SearchBox = ({ onChange, value }: SearchBoxProps) => (
+const SearchBox = ({ onChange, defaultValue }: SearchBoxProps) => (
   <input
     className={css.input}
     onChange={onChange}
     type="text"
     placeholder="Search notes"
-    value={value}
+    defaultValue={defaultValue}
   />
 );
 export default SearchBox;

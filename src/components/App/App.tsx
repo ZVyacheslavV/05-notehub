@@ -21,25 +21,25 @@ const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   /* const queryClient = useQueryClient(); */
 
-  /*   const handleChange = useDebouncedCallback(
+  const handleChange = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(event.target.value.trim());
       setCurrentPage(1);
     },
     500
-  ); */
+  );
 
-  const [inputValue, setInputValue] = useState('');
+  // const [inputValue, setInputValue] = useState('');
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    debouncedSearch(e.target.value);
-  };
+  // const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(e.target.value);
+  //   debouncedSearch(e.target.value);
+  // };
 
-  const debouncedSearch = useDebouncedCallback((value: string) => {
-    setSearchQuery(value.trim());
-    setCurrentPage(1);
-  }, 500);
+  // const debouncedSearch = useDebouncedCallback((value: string) => {
+  //   setSearchQuery(value.trim());
+  //   setCurrentPage(1);
+  // }, 500);
 
   const {
     data: { notes = [], totalPages = 0 } = {},
@@ -96,7 +96,7 @@ const App = () => {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox onChange={handleSearchChange} value={inputValue} />
+        <SearchBox onChange={handleChange} defaultValue={searchQuery} />
         {isSuccess && totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
