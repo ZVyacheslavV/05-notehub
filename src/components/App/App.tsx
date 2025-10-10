@@ -29,6 +29,8 @@ const App = () => {
     500
   );
 
+  // const handleChange = useDebouncedCallback(setSearchQuery, 500);
+
   // const [inputValue, setInputValue] = useState('');
 
   // const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
